@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Settings"
+        android:id="@+id/txtSettings"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"/>
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/radioGroupBackground"
+        android:layout_weight="0.5">
+
+        <TextView
+            style="@style/txtSettingsStyle"
+            android:text="Background"
+            android:id="@+id/txtBackground"/>
+
+        <RadioButton
+            style="@style/radioButtonStyle"
+            android:text="White"
+            android:id="@+id/radioButtonWhite"
+            android:checked="true"/>
+
+        <RadioButton
+            style="@style/radioButtonStyle"
+            android:text="Black"
+            android:id="@+id/radioButtonBlack"
+            android:checked="false"/>
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/radioGroupSound"
+        android:layout_weight="0.5">
+
+        <TextView
+            style="@style/txtSettingsStyle"
+            android:text="Sound"
+            android:id="@+id/txtSound" />
+
+        <RadioButton
+            style="@style/radioButtonStyle"
+            android:text="On"
+            android:id="@+id/radioButtonOn"
+            android:checked="true" />
+
+        <RadioButton
+            style="@style/radioButtonStyle"
+            android:text="Off"
+            android:id="@+id/radioButtonOff"
+            android:checked="false" />
+    </RadioGroup>
+</LinearLayout>

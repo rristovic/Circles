@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/txtHighScore"
+        android:layout_gravity="right"
+        android:text="SADASDA"
+        android:layout_alignBottom="@+id/txtHighScoreLabel"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:id="@+id/txtHighScoreLabel"
+        android:background="@drawable/highscore"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:id="@+id/txtWasted"
+        android:background="@drawable/wastedsolo"
+        android:layout_below="@+id/txtScoreLabel"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/txtScore"
+        android:layout_gravity="right"
+        android:text="ASDSA"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:layout_alignBottom="@+id/txtScoreLabel"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:id="@+id/txtScoreLabel"
+        android:background="@drawable/score"
+        android:layout_below="@+id/txtHighScoreLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:id="@+id/btnContinueWithVicons"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/continuewithvicons"
+        android:layout_above="@+id/btnTryAgain"
+        android:layout_alignRight="@+id/btnBackToMenu"
+        android:layout_alignEnd="@+id/btnBackToMenu"
+        android:layout_marginBottom="32dp"
+        android:layout_alignLeft="@+id/btnBackToMenu"
+        android:layout_alignStart="@+id/btnBackToMenu"
+        android:layout_marginTop="32dp" />
+
+    <ImageButton
+        android:layout_width="208dp"
+        android:layout_height="50dp"
+        android:id="@+id/btnTryAgain"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/tryagain"
+        android:layout_above="@+id/btnBackToMenu"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="269dp"
+        android:layout_height="50dp"
+        android:id="@+id/btnBackToMenu"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/backtomenu"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp" />
+</RelativeLayout>
