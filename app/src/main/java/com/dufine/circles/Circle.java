@@ -1,35 +1,46 @@
 package com.dufine.circles;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.SurfaceHolder;
+
 import java.util.Random;
 
 /**
  * Created by Dusan on 3.3.2015.
  */
 public class Circle {
+    private SurfaceHolder mSurfaceHolder;
+    private CircleView mCircleView;
     private float r;
-//    private float growth=new Random().nextFloat()*5+15;
-//    private float growth=new Random().nextFloat()*5+10;
-//    private float growth=new Random().nextFloat()*5+5;
     private float growth=10;
     private Paint paint=new Paint();
     private CountDownTimer timer=null;
     private Circle preCircle;
     private boolean full=false;
-    private int color;
+    public int[] color;
     private boolean available=true;
 
-    public Circle(int color){
+    private CircleDrawingThread mThread;
+
+    public Circle(int[] color, SurfaceHolder surfaceHolder, CircleView view){
         this.color=color;
         setPaint();
+
+        mSurfaceHolder = surfaceHolder;
+        mCircleView = view;
     }
-    public Circle(Circle preCircle,int color){
+    public Circle(Circle preCircle, SurfaceHolder surfaceHolder, CircleView view){
         this.color=color;
         setPaint();
         this.preCircle=preCircle;
+
+        mSurfaceHolder = surfaceHolder;
+        mCircleView = view;
     }
 
     public float getR() {
@@ -62,44 +73,97 @@ public class Circle {
 
     private void setPaint(){
         paint.setAntiAlias(true);
-        paint.setColor(color);
+        paint.setColor(Color.argb(255,color[0],color[1],color[2]));
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(4.5f);
     }
 
     public void spread(){
-        timer =new CountDownTimer(5000,1) {
+        mThread = new CircleDrawingThread(mSurfaceHolder, mCircleView);
+        mThread.setRunning(true);
+        mThread.start();
+    }
 
-            @Override
-            public void onTick(long millisUntilFinished) {
-             if (!hasTouched() && !full) {
-                if (preCircle != null && r + growth >= preCircle.getR()) {
-                    r = preCircle.getR() - 1;
-                    full=true;
-                } else if (r + growth >= CircleActivity.bitMap.getWidth() / 2) {
-                    r = CircleActivity.bitMap.getWidth() / 2;
-                    full=true;
+    public void pause(){
+        mThread.pause();
+    }
+
+    public void stop(){
+        mThread.setRunning(false);
+    }
+
+    /**
+     * Thread that will be used for canvas drawing control and calculations
+     */
+    class CircleDrawingThread extends Thread {
+        private SurfaceHolder mSurfaceHolder;
+        private CircleView mView;
+        private boolean mRun = false;
+
+        private int mTime;
+        private boolean isPaused = false;
+
+        public CircleDrawingThread(SurfaceHolder surfaceHolder, CircleView view) {
+            mSurfaceHolder = surfaceHolder;
+            mView = view;
+        }
+
+        public void setRunning(boolean run) {
+            mRun = run;
+        }
+
+        protected void pause() {
+            isPaused = true;
+        }
+
+        protected void play() {
+            isPaused = false;
+        }
+
+        @Override
+        public void run() {
+            Canvas c;
+            while (mRun) {
+                c = null;
+                if (!hasTouched() && !full && !isPaused) {
+                    if (preCircle != null && r + growth >= preCircle.getR()) {
+                        r = preCircle.getR() - 1;
+                        full = true;
+                    } else if (r + growth >= CircleActivity.bitMap.getWidth() / 2) {
+                        r = CircleActivity.bitMap.getWidth() / 2;
+                        full = true;
+                    } else {
+                        r += growth;
+                    }
+                    try {
+                        c = mSurfaceHolder.lockCanvas(null);
+                        if (c != null)
+                            synchronized (mSurfaceHolder) {
+                                Log.d("CircleActivity", "onDraw");
+                                mView.onDraw(c);
+                            }
+                    } finally {
+                        // do this in a finally so that if an exception is thrown
+                        // during the above, we don't leave the Surface in an
+                        // inconsistent state
+                        if (c != null) {
+                            mSurfaceHolder.unlockCanvasAndPost(c);
+                        }
+                    }
                 } else {
-                    r += growth;
+                    setRunning(false);
                 }
-                drawCircle();
-                }
-             else timer.onFinish();
             }
+        }
 
-            @Override
-            public void onFinish() {
-                available=false;
-                CircleActivity.img.setEnabled(false);
-            }
+        private void drawCircle(Canvas c) {
 
-        };
-        timer.start();
+        }
     }
 
     public void drawCircle(){
         CircleActivity.canvas.drawCircle(CircleActivity.bitMap.getWidth()/2, CircleActivity.bitMap.getHeight()/2,r,paint);
-        CircleActivity.img.setImageBitmap(CircleActivity.bitMap);
+        //CircleActivity.img.setImageBitmap(CircleActivity.bitMap);
     }
     private boolean hasTouched(){
         return ((preCircle!=null && preCircle.getR()<r)|| r>= CircleActivity.bitMap.getWidth() / 2);

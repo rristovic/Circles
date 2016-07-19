@@ -33,7 +33,7 @@
     <ImageButton
         style="@style/buttonStyle"
         android:id="@+id/btnPlay"
-        android:background="@drawable/play"
+        android:background="@drawable/play_game"
         android:onClick="changeToPlay"
         android:layout_alignBottom="@+id/btnVicons"
         android:layout_alignParentRight="true"

@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/llMain"
+    android:background="@drawable/background_white">
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/txtScore"
-        android:textColor="#ff000000"
-        android:layout_gravity="center"
-        android:textSize="50dp"
-        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Level: "
+        android:id="@+id/tvLevel"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="3"
         android:gravity="center" />
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="New Text"
+        android:id="@+id/tvCLeft"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="3"
+        android:gravity="center" />
+
+    <com.dufine.circles.CircleView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/surfaceView"
+        android:layout_weight="1" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="New ToggleButton"
+        android:id="@+id/toggleButton"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:background="@drawable/togglebtn_bg"
+        android:checked="false"
+        android:textOff=""
+        android:textOn=""/>
+
 
 </LinearLayout>
