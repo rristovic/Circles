@@ -1,3 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Data\Android\Projects\Circles\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\libs\internal_impl-21.0.3.jar"
+        jumboMode="true"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\Data\Android\Projects\Circles\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-21.0.3_28e1fb3ff6efad5d6b1d52034bb5c4275d7189c0\classes.dex" />
+    </item>
+    <item
+        jar="C:\Data\Android\Projects\Circles\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="21.1.2"
+        sha1="42b235b5d8c28bce32e91a492b48fb1916d4e82d">
+        <dex dex="C:\Data\Android\Projects\Circles\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_2ef10d6b3847a822b6503e80635a5a61f78b40b3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Data\Android\Projects\Circles\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="21.1.2"
+        sha1="5831bccce17a80549cb167a5aa5074eef78cbaea">
+        <dex dex="C:\Data\Android\Projects\Circles\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_c0a9f68103f72bfcd78af2b25e5aec883ce4b13c\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Sarma\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="true"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Data\Android\Projects\Circles\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-21.0.3_3508da96797d2061d3e9642d2143ce0a8b5817c7\classes.dex" />
+    </item>
+    <item
+        jar="C:\Data\Android\Projects\Circles\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\classes.jar"
+        jumboMode="true"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\Data\Android\Projects\Circles\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-21.0.3_e46e06aa750d72480e56ec29e312ac9fbbd746eb\classes.dex" />
+    </item>
+    <item
+        jar="C:\Data\Android\Projects\Circles\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\jars\classes.jar"
+        jumboMode="true"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Data\Android\Projects\Circles\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-21.0.3_a1b368c99bd3a101217c8a062765b566c6c732fb\classes.dex" />
+    </item>
+
+</items>

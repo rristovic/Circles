@@ -36,7 +36,6 @@ import java.util.concurrent.RunnableFuture;
  * Created by Dusan on 3.3.2015.
  */
 public class CircleActivity extends ActionBarActivity {
-    private LinkedList<Circle> circles;
     private int score = 0;
     private int count = 0;
     protected static Bitmap bitMap;
@@ -80,7 +79,6 @@ public class CircleActivity extends ActionBarActivity {
         tvCLeft = (TextView) findViewById(R.id.tvCLeft);
         tvLevel = (TextView) findViewById(R.id.tvLevel);
         mToggleButton = (ToggleButton) findViewById(R.id.toggleButton);
-        circles = new LinkedList<>();
 
         mSurfaceView.setZOrderOnTop(true);    // necessary
         mSurfaceHolder = mSurfaceView.getHolder();
@@ -183,12 +181,12 @@ public class CircleActivity extends ActionBarActivity {
         return colors;
     }
 
-    private boolean gameOver() {
-        for (int i = 0; i < circles.size(); i++) {
-            if (circles.get(i).isAvailable()) return false;
-        }
-        return true;
-    }
+//    private boolean gameOver() {
+//        for (int i = 0; i < circles.size(); i++) {
+//            if (circles.get(i).isAvailable()) return false;
+//        }
+//        return true;
+//    }
 
 
 }
