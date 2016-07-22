@@ -35,7 +35,7 @@
         android:layout_width="140dp"
         android:layout_height="80dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/txtScore"
+        android:id="@+id/tvScore"
         android:layout_gravity="right"
         android:text="ASDSA"
         android:textStyle="bold"

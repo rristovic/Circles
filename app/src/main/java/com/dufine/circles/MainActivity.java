@@ -43,14 +43,17 @@ public class MainActivity extends ActionBarActivity {
     public void changeToPlay(View view) {
         Intent intent = new Intent(this, CircleActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void changeToSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+        finish();
     }
     public void changeToResult(View view) {
         Intent intent = new Intent(this, ResultActivity.class);
         startActivity(intent);
+        finish();
     }
 }

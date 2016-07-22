@@ -7,28 +7,62 @@
     android:id="@+id/llMain"
     android:background="@drawable/background_white">
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Level: "
-        android:id="@+id/tvLevel"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:gravity="center" />
+        android:layout_weight="3">
 
-    <TextView
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Level:"
+            android:id="@+id/textView"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right|end" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="1"
+            android:id="@+id/tvLevel"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start|left"
+            android:layout_marginLeft="5dp"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="New Text"
-        android:id="@+id/tvCLeft"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:gravity="center" />
+        android:layout_weight="3" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Circles left:"
+            android:id="@+id/textView2"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right|end" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="3"
+            android:id="@+id/tvCLeft"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start|left"
+            android:layout_marginLeft="5dp"
+            android:textSize="30dp" />
+    </LinearLayout>
 
     <com.dufine.circles.CircleView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/surfaceView"
+        android:id="@+id/surfaceVIEW"
         android:layout_weight="1" />
 
     <ToggleButton
@@ -41,7 +75,8 @@
         android:background="@drawable/togglebtn_bg"
         android:checked="false"
         android:textOff=""
-        android:textOn=""/>
+        android:textOn=""
+        android:layout_margin="2dp" />
 
 
 </LinearLayout>

@@ -5,18 +5,17 @@ package com.dufine.circles;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.Calendar;
 import java.util.Random;
 
 /**
@@ -24,25 +23,36 @@ import java.util.Random;
  */
 public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private int myCanvas_w;
-    private int myCanvas_h;
+    private int mCanvas_w;
+    private int mCanvas_h;
 
-    private Bitmap myCanvasBitmap;
-    private Canvas myCanvas = new Canvas();
+    private Bitmap mCanvasBitmap;
+    private Canvas mCanvas = new Canvas();
     private int radius;
     private Matrix identityMatrix;
 
     private Random random = new Random();
     private Paint p;
-    private SurfaceHolder mSurfaceHolder;
-    private CircleView mCircleView;
-    private float r;
-    private float growth = 10;
-    private Paint paint = new Paint();
     public int[] color;
 
+    private Context mContext;
+    private SurfaceHolder mSurfaceHolder;
     private CircleDrawingThread mThread;
 
+    // Circles count, radius and control
+    private boolean isFirstRun = true;
+    private int mCirclesCount = 10;
+    private int mFirstRadius = Integer.MAX_VALUE;
+    private int mPrevRadius = Integer.MAX_VALUE;
+    private int mCurRadius = 0;
+    private boolean isFirstDrawing;
+
+    // Game variables
+    private int SCALE_FACTOR = 3;
+    private int mLevel = 1;
+
+    public static final String LEVEL_COUNT = "CircleView_level_count";
+    public static final String CIRCLES_COUNT = "CircleView_circles_count";
 
     public CircleView(Context context) {
         super(context);
@@ -60,6 +70,7 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void init(Context context) {
+        mContext = context;
         getHolder().addCallback(this);
     }
 
@@ -67,14 +78,14 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
 
         // Height and width of the surface view
-        myCanvas_w = getWidth();
-        myCanvas_h = getHeight();
+        mCanvas_w = getWidth();
+        mCanvas_h = getHeight();
 
         // Bitmap used for rendering and drawing circles
-        myCanvasBitmap = Bitmap.createBitmap(myCanvas_w, myCanvas_h, Bitmap.Config.ARGB_8888);
+        mCanvasBitmap = Bitmap.createBitmap(mCanvas_w, mCanvas_h, Bitmap.Config.ARGB_8888);
 
         // Canvas that ready bitmap is saved on
-        myCanvas.setBitmap(myCanvasBitmap);
+        mCanvas.setBitmap(mCanvasBitmap);
 
         // Matrix used for drawing bitmaps onto the canvas
         identityMatrix = new Matrix();
@@ -106,27 +117,34 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void spread() {
-        setPaint();
-        if (mThread!=null && Thread.State.TERMINATED.equals(mThread.getState())) {
-            Log.d("CircleView","Thread is terminated!");
-            mThread = new CircleDrawingThread(mSurfaceHolder, this);
-            mThread.setRunning(true);
-            mThread.start();
-        } else {
-            mThread.setRunning(true);
-            mThread.start();
+    @Override
+    public void onDraw(Canvas canvas) {
+        int w = mCanvas.getWidth();
+        int h = mCanvas.getHeight();
+
+        // Draw the outer circle before continuing with the game
+        if (isFirstDrawing) {
+            mCanvas.drawCircle(w / 2, h / 2, mFirstRadius * SCALE_FACTOR, p);
+            canvas.drawBitmap(mCanvasBitmap, identityMatrix, null);
+            isFirstDrawing = false;
+            setPaint();
         }
+
+        ++mCurRadius;
+        mCanvas.drawCircle(w / 2, h / 2, mCurRadius * SCALE_FACTOR, p);
+        canvas.drawBitmap(mCanvasBitmap, identityMatrix, null);
+
+
     }
 
-    private void setPaint() {
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-        p = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.argb(255, r, g, b));
-        paint.setStyle(Paint.Style.FILL);
+    public void spread() {
+        mThread = new CircleDrawingThread(mSurfaceHolder, this);
+        mThread.setRunning(true);
+        mThread.start();
+
+        updateInfo();
+        setPaint();
+        mCirclesCount--;
     }
 
     public void pause() {
@@ -137,14 +155,83 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
         mThread.setRunning(false);
     }
 
-    @Override
-    public void onDraw(Canvas canvas) {
+    public void play() {
+        mThread.play();
+    }
 
-        int w = myCanvas.getWidth();
-        int h = myCanvas.getHeight();
-        myCanvas.drawCircle(w / 2, h / 2, ++radius, p);
+    /**
+     * @return true is new circle can be drawn, false is game over.
+     */
+    public boolean isCircleValid() {
+        return mCurRadius < mFirstRadius &&
+                mCurRadius < mPrevRadius &&
+                mCurRadius * SCALE_FACTOR < mContext.getResources().getDisplayMetrics().widthPixels / 2;
+    }
 
-        canvas.drawBitmap(myCanvasBitmap, identityMatrix, null);
+    public void createNewCircle() {
+
+        if (mCirclesCount == 0) {
+            // TODO: Add circle count logic to the game
+            mLevel++;
+            mCirclesCount = 10;
+            isFirstDrawing = true;
+        }
+
+        // Save previous radius to compare to current
+        mPrevRadius = mCurRadius;
+        mCurRadius = 0;
+
+        // Saving first created circle and its radius
+        if (isFirstRun) {
+            mFirstRadius = mPrevRadius;
+            isFirstRun = false;
+        }
+
+        if (isFirstDrawing) {
+            mPrevRadius = mFirstRadius;
+            isFirstRun = true;
+        }
+
+        updateInfo();
+        setPaint();
+        mCirclesCount--;
+
+
+    }
+
+    private void gameOver() {
+        mThread.setRunning(false);
+
+        Intent i = new Intent(mContext,ResultActivity.class);
+        i.putExtra(LEVEL_COUNT,mLevel);
+        i.putExtra(CIRCLES_COUNT,mCirclesCount);
+        mContext.startActivity(i);
+
+        ((CircleActivity)mContext).finish();
+    }
+
+    private void setPaint() {
+
+        // TODO: Add painting logic to the game
+        int r = random.nextInt(255);
+        int g = random.nextInt(255);
+        int b = random.nextInt(255);
+        p = new Paint();
+        p.setAntiAlias(true);
+        p.setColor(Color.argb(255, r, g, b));
+        p.setStyle(Paint.Style.FILL);
+    }
+
+    public int getCircleCount(){
+        return mCirclesCount;
+    }
+
+    public int getLevel(){
+        return mLevel;
+    }
+
+    private void updateInfo(){
+        ((CircleActivity) mContext).updateInfo(Integer.toString(mCirclesCount),Integer.toString(mLevel));
     }
 
     /**
@@ -153,8 +240,8 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
     class CircleDrawingThread extends Thread {
         private SurfaceHolder mSurfaceHolder;
         private CircleView mView;
-        private boolean mRun = false;
 
+        private boolean mRun = false;
         private boolean isPaused = false;
 
         public CircleDrawingThread(SurfaceHolder surfaceHolder, CircleView view) {
@@ -179,6 +266,7 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
             Canvas c;
             while (mRun) {
                 c = null;
+                if (isCircleValid() && !isPaused)
                     try {
                         c = mSurfaceHolder.lockCanvas(null);
                         if (c != null)
@@ -194,9 +282,13 @@ public class CircleView extends SurfaceView implements SurfaceHolder.Callback {
                             mSurfaceHolder.unlockCanvasAndPost(c);
                         }
                     }
+                else if (!isPaused)
+                    gameOver();
 
             }
         }
+
     }
+
 
 }

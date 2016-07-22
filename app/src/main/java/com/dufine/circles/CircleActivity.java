@@ -36,46 +36,23 @@ import java.util.concurrent.RunnableFuture;
  * Created by Dusan on 3.3.2015.
  */
 public class CircleActivity extends ActionBarActivity {
-    private int score = 0;
-    private int count = 0;
-    protected static Bitmap bitMap;
-    protected static Canvas canvas;
-    private int change = 0;
-    private int[] colors = setColor();
-    private int number = 0;
     private SurfaceHolder mSurfaceHolder;
-
-    private int mFps;
-    public Object lock = new Object();
-
     private CircleView mSurfaceView;
     private TextView tvLevel, tvCLeft;
     private ToggleButton mToggleButton;
 
-    private boolean started = false;
+    private boolean isFirstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_circle);
-        //creating bitmap for every display
-        Display display = getWindowManager().getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int x = point.x * 1000 / 480;
-        int y = point.y * 1000 / 800;
 
-        bitMap = Bitmap.createBitmap(x, y, Bitmap.Config.ARGB_8888);  //creates bmp
-        bitMap = bitMap.copy(bitMap.getConfig(), true);     //lets bmp to be mutable
-        bitMap.eraseColor(Color.BLACK);
-        canvas = new Canvas(bitMap);    //draw a canvas in defined bmp
-        //img.setImageBitmap(bitMap);
         init();
     }
 
-
     private void init() {
-        mSurfaceView = (CircleView) findViewById(R.id.surfaceView);
+        mSurfaceView = (CircleView) findViewById(R.id.surfaceVIEW);
         tvCLeft = (TextView) findViewById(R.id.tvCLeft);
         tvLevel = (TextView) findViewById(R.id.tvLevel);
         mToggleButton = (ToggleButton) findViewById(R.id.toggleButton);
@@ -88,82 +65,37 @@ public class CircleActivity extends ActionBarActivity {
     }
 
     private void setOnClickListener() {
-//        mSurfaceView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                score++;
-//                count++;
-//                if (circles.size() == 0) {
-//                    Circle circle = new Circle(colors[change], mSurfaceHolder, mSurfaceView);
-//                    change = 1;
-//                    circles.add(circle);
-//                    circle.spread();
-//                } else {
-//                    Circle circle = new Circle(circles.get((circles.size() - 1)), colors[2 * (count / 10) + change], mSurfaceHolder, mSurfaceView);
-//                    if (change == 1) change = 0;
-//                    else change = 1;
-//                    circles.add(circle);
-//                    circle.getPreCircle().getTimer().cancel();
-//
-//
-//                    if (count % 10 == 0) {
-//                        int capacity = circles.size() - 1;
-//                        for (int i = 1; i < 10 - count / 10 + number; i++) {
-//                            circles.remove(capacity - i);
-//                        }
-//                        number = 1;
-//                        circle.setPreCircle(circles.get(circles.size() - 2));
-//                        for (int i = 0; i < circles.size() - 1; i++) {
-//                            circles.get(i).drawCircle();
-//                        }
-//                        //img.setEnabled(true);
-//                    }
-//                    circle.spread();
-//                }
-//                //txtScore.setText(Integer.toString(score));
-//            }
-//        });
+        mSurfaceView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isFirstRun){
+                    mSurfaceView.spread();
+                    isFirstRun = false;
+                    return;
+                }
+                mSurfaceView.createNewCircle();
+            }
+        });
 
         mToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    mSurfaceView.spread();
+                    mSurfaceView.pause();
                 } else
-                    mSurfaceView.stop();
+                    mSurfaceView.play();
             }
         });
-    }
-
-    public SurfaceHolder getSurfaceHolder(){
-        return mSurfaceHolder;
-    }
-
-    public CircleView getCircleView(){
-        return mSurfaceView;
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-//        img.setEnabled(true);
     }
 
-
-    public void setBitmap() {
-        //creating bitmap for every display
-        Display display = getWindowManager().getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int x = point.x * 1000 / 480;
-        int y = point.y * 1000 / 800;
-
-        bitMap = Bitmap.createBitmap(x, y, Bitmap.Config.ARGB_8888);  //creates bmp
-        bitMap = bitMap.copy(bitMap.getConfig(), true);     //lets bmp to be mutable
-        bitMap.eraseColor(Color.BLACK);
-        canvas = new Canvas(bitMap);    //draw a canvas in defined bmp
-        //img.setImageBitmap(bitMap);
+    public void gameOver(){
+        finish();
     }
 
     private int[] setColor() {
@@ -181,12 +113,8 @@ public class CircleActivity extends ActionBarActivity {
         return colors;
     }
 
-//    private boolean gameOver() {
-//        for (int i = 0; i < circles.size(); i++) {
-//            if (circles.get(i).isAvailable()) return false;
-//        }
-//        return true;
-//    }
-
-
+    public void updateInfo(String circlesLeft, String level){
+        tvCLeft.setText(circlesLeft);
+        tvLevel.setText(level);
+    }
 }
