@@ -5,4 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Pref vars -->
+    <string name="high_score_pref_level">level</string>
+    <string name="high_score_pref_count">count</string>
+
+
 </resources>

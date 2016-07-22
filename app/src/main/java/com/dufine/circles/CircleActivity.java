@@ -20,6 +20,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ public class CircleActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_circle);
 
         init();
@@ -71,6 +74,8 @@ public class CircleActivity extends ActionBarActivity {
                 if(isFirstRun){
                     mSurfaceView.spread();
                     isFirstRun = false;
+                    mToggleButton.setVisibility(View.VISIBLE);
+                    mToggleButton.setEnabled(true);
                     return;
                 }
                 mSurfaceView.createNewCircle();
